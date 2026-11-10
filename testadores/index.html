@@ -1,0 +1,210 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Teste o Verbly</title>
+  <meta name="description" content="Seja um dos 12 testadores do Verbly, app para praticar verbos em inglês montando frases.">
+  <link rel="icon" href="icon.png">
+  <style>
+    :root {
+      --ink: #2A0E6E; --brand: #6A2FE0; --bg: #F6F3FF; --card: #FFFFFF;
+      --muted: #5B5470; --line: #E2DAF7; --ok: #1E8E5A; --err: #C2522D;
+      --track: #ECE6FB;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --ink: #EDE6FF; --brand: #B79BFF; --bg: #120D22; --card: #1C1533;
+        --muted: #B3AACB; --line: #2F2650; --ok: #5FD39A; --err: #F08A66;
+        --track: #2A2147;
+      }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--bg); color: var(--ink);
+           font: 17px/1.55 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+    header { background: linear-gradient(135deg, #9B6BFF, #6A2FE0); color: #fff;
+             padding: 36px 16px 72px; text-align: center; }
+    header img { width: 84px; height: 84px; border-radius: 22px;
+                 box-shadow: 0 6px 20px rgba(0,0,0,.25); }
+    header h1 { margin: 14px 0 6px; font-size: 1.7rem; line-height: 1.2; }
+    header p { margin: 0 auto; max-width: 30em; opacity: .92; }
+    main { max-width: 560px; margin: -48px auto 0; padding: 0 16px 40px; }
+    .card { background: var(--card); border: 1px solid var(--line); border-radius: 20px;
+            padding: 22px 20px; box-shadow: 0 8px 28px rgba(42,14,110,.10); }
+    .meta { display: flex; justify-content: space-between; align-items: baseline;
+            font-size: .95rem; color: var(--muted); }
+    .meta strong { color: var(--ink); font-size: 1.25rem; }
+    .bar { height: 10px; background: var(--track); border-radius: 99px; overflow: hidden;
+           margin: 8px 0 20px; }
+    .bar span { display: block; height: 100%; width: 0; background: var(--ok);
+                border-radius: 99px; transition: width .6s ease; }
+    label { display: block; font-weight: 600; margin-bottom: 6px; }
+    .hint { color: var(--muted); font-size: .88rem; margin: 6px 0 0; }
+    input[type=email] { width: 100%; min-height: 52px; padding: 12px 14px; font: inherit;
+            color: var(--ink); background: var(--bg); border: 2px solid var(--line);
+            border-radius: 14px; outline: none; }
+    input[type=email]:focus { border-color: var(--brand); }
+    .check { display: flex; gap: 10px; align-items: flex-start; margin: 16px 0;
+             font-size: .9rem; color: var(--muted); font-weight: 400; cursor: pointer; }
+    .check input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--brand);
+                   flex: none; }
+    button { width: 100%; min-height: 52px; border: 0; border-radius: 14px; font: inherit;
+             font-weight: 700; color: #fff; background: #6A2FE0; cursor: pointer; }
+    button:disabled { opacity: .6; cursor: wait; }
+    .isca { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+    .msg { margin: 14px 0 0; font-weight: 600; min-height: 1.5em; }
+    .msg.ok { color: var(--ok); } .msg.err { color: var(--err); }
+    .feito { text-align: center; padding: 8px 0; }
+    .feito .big { font-size: 2.6rem; line-height: 1; }
+    h2 { font-size: 1.1rem; color: var(--brand); margin: 32px 0 12px; }
+    ol { list-style: none; padding: 0; margin: 0; counter-reset: p; }
+    ol li { counter-increment: p; position: relative; padding: 0 0 14px 44px; }
+    ol li::before { content: counter(p); position: absolute; left: 0; top: 0;
+                    width: 30px; height: 30px; border-radius: 50%; background: var(--track);
+                    color: var(--brand); font-weight: 700; display: grid; place-items: center; }
+    .tiles { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin: 18px 0 0; }
+    .tiles span { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.35);
+                  border-radius: 10px; padding: 4px 10px; font-weight: 600; font-size: .95rem; }
+    footer { text-align: center; color: var(--muted); font-size: .85rem; padding: 0 16px 32px; }
+    a { color: var(--brand); }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="icon.png" alt="Ícone do Verbly">
+    <h1>Seja um testador do Verbly</h1>
+    <p>Pratique verbos em inglês no presente, passado e futuro montando frases com blocos.
+       Preciso de 12 pessoas para testar o app antes do lançamento na Play Store.</p>
+    <div class="tiles" aria-hidden="true">
+      <span>I</span><span>will</span><span>test</span><span>the</span><span>app</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="card" aria-live="polite">
+      <div class="meta">
+        <span>Testadores inscritos</span>
+        <span><strong id="total">–</strong> de 12</span>
+      </div>
+      <div class="bar" role="progressbar" aria-label="Vagas preenchidas"
+           aria-valuemin="0" aria-valuemax="12" aria-valuenow="0"><span id="barra"></span></div>
+
+      <form id="form" novalidate>
+        <label for="email">Seu e-mail do Google</label>
+        <input id="email" name="email" type="email" inputmode="email" autocomplete="email"
+               placeholder="voce@gmail.com" required>
+        <p class="hint">Use o e-mail da conta Google que está no seu celular Android
+          (a mesma da Play Store). Só ele recebe acesso ao teste.</p>
+
+        <div class="isca" aria-hidden="true">
+          <label for="site">Não preencha</label>
+          <input id="site" name="site" type="text" tabindex="-1" autocomplete="off">
+        </div>
+
+        <label class="check">
+          <input id="aceite" type="checkbox" required>
+          <span>Autorizo o uso do meu e-mail só para o convite do teste do Verbly.
+            Ele não será compartilhado e será apagado depois do teste.</span>
+        </label>
+
+        <button id="enviar" type="submit">Quero testar</button>
+        <p id="msg" class="msg" role="status"></p>
+      </form>
+
+      <div id="feito" class="feito" hidden>
+        <div class="big" aria-hidden="true">🎉</div>
+        <h3>Valeu! Você está na lista.</h3>
+        <p>Em breve você recebe por e-mail o link do teste na Play Store.</p>
+      </div>
+    </section>
+
+    <h2>Como funciona</h2>
+    <ol>
+      <li><strong>Deixe seu e-mail</strong> aqui em cima.</li>
+      <li><strong>Receba o convite</strong> com o link do teste na Play Store.</li>
+      <li><strong>Instale e use</strong> o Verbly. Mantenha o app instalado por 14 dias:
+        é o que o Google exige para liberar o lançamento.</li>
+      <li><strong>Conte o que achou</strong>: erros, frases estranhas, ideias.</li>
+    </ol>
+    <p class="hint">Precisa de um celular ou tablet Android. Dúvidas:
+      <a href="mailto:marcoseduardogontijo@gmail.com">marcoseduardogontijo@gmail.com</a></p>
+  </main>
+
+  <footer>
+    Verbly · <a href="../">Política de privacidade do app</a>
+  </footer>
+
+  <script>
+    // URL /exec do Apps Script (ver apps-script.gs).
+    const SCRIPT_URL = 'COLE_AQUI_A_URL_DO_APPS_SCRIPT';
+    const META = 12;
+
+    const $ = (id) => document.getElementById(id);
+    const configurado = SCRIPT_URL.startsWith('https://');
+
+    function mostrarTotal(n) {
+      $('total').textContent = n;
+      const pct = Math.min(n / META, 1) * 100;
+      $('barra').style.width = pct + '%';
+      document.querySelector('.bar').setAttribute('aria-valuenow', Math.min(n, META));
+    }
+
+    function mensagem(texto, tipo) {
+      $('msg').textContent = texto;
+      $('msg').className = 'msg ' + (tipo || '');
+    }
+
+    async function carregarTotal() {
+      if (!configurado) return;
+      try {
+        const r = await fetch(SCRIPT_URL);
+        const d = await r.json();
+        if (d.ok) mostrarTotal(d.total);
+      } catch (e) { /* sem contador, o formulário continua funcionando */ }
+    }
+
+    $('form').addEventListener('submit', async (ev) => {
+      ev.preventDefault();
+      const email = $('email').value.trim();
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        mensagem('Digite um e-mail válido.', 'err'); $('email').focus(); return;
+      }
+      if (!$('aceite').checked) {
+        mensagem('Marque a autorização para continuar.', 'err'); return;
+      }
+      if (!configurado) {
+        mensagem('O formulário ainda não está ligado à planilha.', 'err'); return;
+      }
+      $('enviar').disabled = true;
+      mensagem('Enviando…');
+      try {
+        // text/plain evita o preflight de CORS; o Apps Script lê o corpo como texto.
+        const r = await fetch(SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({ email, site: $('site').value })
+        });
+        const d = await r.json();
+        if (d.ok) {
+          mostrarTotal(d.total);
+          $('form').hidden = true;
+          $('feito').hidden = false;
+          if (d.repetido) {
+            $('feito').querySelector('h3').textContent = 'Este e-mail já estava na lista. Valeu!';
+          }
+        } else if (d.erro === 'email') {
+          mensagem('Digite um e-mail válido.', 'err');
+        } else {
+          mensagem('Não deu para cadastrar agora. Tente de novo mais tarde.', 'err');
+        }
+      } catch (e) {
+        mensagem('Sem conexão com o servidor. Tente de novo.', 'err');
+      } finally {
+        $('enviar').disabled = false;
+      }
+    });
+
+    carregarTotal();
+  </script>
+</body>
+</html>
